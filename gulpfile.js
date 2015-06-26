@@ -7,6 +7,8 @@ var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
 var karma = require('karma').server;
+var protractor = require("gulp-protractor").protractor;
+var connect = require('gulp-connect');
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -59,4 +61,25 @@ gulp.task('test', function(done) {
     }, function() {
         done();
     });
+});
+
+gulp.task('seleniumUpdate',function(){
+  sh.exec("node node_modules/protractor/bin/webdriver-manager update --standalone");
+})
+
+gulp.task('seleniumStart',function(){
+  sh.exec("node node_modules/protractor/bin/webdriver-manager start");
+});
+
+gulp.task('e2e', function() {
+
+  connect.server({
+    root: 'www',
+    port: 8888
+  });
+
+  gulp.src(["./tests/e2e/**/*.js"])
+    .pipe(protractor({
+      configFile: "tests/protractor.conf.js"
+  }));
 });
