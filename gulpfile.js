@@ -71,15 +71,16 @@ gulp.task('seleniumStart',function(){
   sh.exec("node node_modules/protractor/bin/webdriver-manager start");
 });
 
-gulp.task('e2e', function() {
-
+gulp.task('serve',function(){
   connect.server({
     root: 'www',
     port: 8888
   });
+});
 
+gulp.task('e2e', function() {
   gulp.src(["./tests/e2e/**/*.js"])
-    .pipe(protractor({
-      configFile: "tests/protractor.conf.js"
+  .pipe(protractor({
+    configFile: "tests/protractor.conf.js"
   }));
 });
