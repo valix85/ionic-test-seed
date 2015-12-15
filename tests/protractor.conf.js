@@ -1,22 +1,24 @@
-// An example configuration file.
 exports.config = {
-  seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
+  seleniumAddress: 'http://0.0.0.0:4723/wd/hub',
   seleniumArgs: ["-browserTimeout=60"],
-  
-  // Capabilities to be passed to the webdriver instance.
-  capabilities: {
-    'browserName': 'chrome'
-  },
 
-  // Framework to use. Jasmine 2 is recommended.
-  framework: 'jasmine2',
-
-  // Spec patterns are relative to the current working directly when
-  // protractor is called.
   specs: ['../tests/e2e/**/*.js'],
 
-  // Options to be passed to Jasmine.
-  jasmineNodeOpts: {
-    defaultTimeoutInterval: 30000
+  capabilities: {
+    platformName: 'android',
+    platformVersion: '5.0',
+    deviceName: 'a35353a9',
+    browserName: "",
+    autoWebview: true,
+    app: __dirname + '/../platforms/android/build/outputs/apk/android-debug.apk'
+  },
+
+  baseUrl: 'http://192.168.0.52:8100',
+
+  onPrepare: function() {
+    var wd = require('wd'),
+      protractor = require('protractor'),
+      wdBridge = require('wd-bridge')(protractor, wd);
+    wdBridge.initFromProtractor(exports.config);
   }
 };
