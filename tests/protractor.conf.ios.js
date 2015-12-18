@@ -14,9 +14,17 @@ exports.config = {
   },
 
   onPrepare: function() {
-    var wd = require('wd'),
-      protractor = require('protractor'),
-      wdBridge = require('wd-bridge')(protractor, wd);
+    var wd = require('wd');
+    var protractor = require('protractor');
+    var wdBridge = require('wd-bridge')(protractor, wd);
+    var HtmlReporter = require('protractor-html-screenshot-reporter');
+
     wdBridge.initFromProtractor(exports.config);
+
+    var directory = './report/ios-' + Date.now();
+
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: directory
+    }));
   }
 };

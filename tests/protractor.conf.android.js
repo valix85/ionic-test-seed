@@ -14,9 +14,11 @@ exports.config = {
   },
 
   onPrepare: function() {
-    var wd = require('wd'),
-      protractor = require('protractor'),
-      wdBridge = require('wd-bridge')(protractor, wd);
+    var wd = require('wd');
+    var protractor = require('protractor');
+    var wdBridge = require('wd-bridge')(protractor, wd);
+    
     wdBridge.initFromProtractor(exports.config);
+    
   }
 };
