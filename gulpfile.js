@@ -25,7 +25,9 @@ gulp.task('sass', function(done) {
     .pipe(minifyCss({
       keepSpecialComments: 0
     }))
-    .pipe(rename({ extname: '.min.css' }))
+    .pipe(rename({
+      extname: '.min.css'
+    }))
     .pipe(gulp.dest('./www/css/'))
     .on('end', done);
 });
@@ -41,37 +43,20 @@ gulp.task('install', ['git-check'], function() {
     });
 });
 
-gulp.task('git-check', function(done) {
-  if (!sh.which('git')) {
-    console.log(
-      '  ' + gutil.colors.red('Git is not installed.'),
-      '\n  Git, the version control system, is required to download Ionic.',
-      '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
-      '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
-    );
-    process.exit(1);
-  }
-  done();
+gulp.task('seleniumUpdate',function(){
+  sh.exec("node node_modules/protractor/bin/webdriver-manager update --standalone");
 });
 
 gulp.task('test', function(done) {
-    karma.start({
-        configFile: __dirname + '/tests/karma.conf.js',
-        singleRun: true
-    }, function() {
-        done();
-    });
+  karma.start({
+    configFile: __dirname + '/tests/karma.conf.js',
+    singleRun: true
+  }, function() {
+    done();
+  });
 });
 
-gulp.task('seleniumUpdate',function(){
-  sh.exec("node node_modules/protractor/bin/webdriver-manager update --standalone");
-})
-
-gulp.task('seleniumStart',function(){
-  sh.exec("node node_modules/protractor/bin/webdriver-manager start");
-});
-
-gulp.task('serve',function(){
+gulp.task('serve', function() {
   connect.server({
     root: 'www',
     port: 8888
@@ -80,7 +65,11 @@ gulp.task('serve',function(){
 
 gulp.task('e2e', function() {
   gulp.src(["./tests/e2e/**/*.js"])
-  .pipe(protractor({
-    configFile: "tests/protractor.conf.js"
-  }));
+    .pipe(protractor({
+      configFile: "tests/protractor.conf.ios.js",
+      args: ["--verbose"]
+    })).pipe(protractor({
+      configFile: "tests/protractor.conf.android.js",
+      args: ["--verbose"]
+    }));
 });

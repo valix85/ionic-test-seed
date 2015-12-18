@@ -5,15 +5,13 @@ exports.config = {
   specs: ['../tests/e2e/**/*.js'],
 
   capabilities: {
-    platformName: 'android',
-    platformVersion: '5.0',
-    deviceName: 'a35353a9',
+    platformName: 'iOS',
+    platformVersion: '9.2',
+    deviceName: 'iPhone 5s',
     browserName: "",
     autoWebview: true,
-    app: __dirname + '/../platforms/android/build/outputs/apk/android-debug.apk'
+    app: __dirname + '/../platforms/ios/build/emulator/ionic-test-seed.app'
   },
-
-  baseUrl: 'http://192.168.0.52:8100',
 
   onPrepare: function() {
     var wd = require('wd'),
